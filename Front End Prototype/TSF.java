@@ -46,7 +46,7 @@ class TSF {
 		try {
 			Files.write(file, info, Charset.forName("UTF-8"));
 		} catch (IOException e) {
-			System.out.println("whoops: " + e);
+			System.out.println("Error: " + e);
 			return false;
 		}
 

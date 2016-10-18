@@ -21,6 +21,8 @@ import java.nio.file.Files;
 
 public class Main {
 	public static void main(String[] args) {
+		String valName = args[0];
+		String tsfFileName = args[1];
 		Scanner scan = new Scanner(System.in);
 		String inputString;
 		Integer tsfVersion = 0;
@@ -31,7 +33,7 @@ public class Main {
 				System.out.println("Select mode: atm or agent.");
 				inputString = scan.nextLine();
 				if (inputString.equals("atm") || inputString.equals("agent")) {
-				 	Session session = new Session(inputString, tsfVersion);
+				 	Session session = new Session(inputString, tsfFileName, tsfVersion, valName);
 				 	session.route();
 					tsfVersion += 1;
 				} else {

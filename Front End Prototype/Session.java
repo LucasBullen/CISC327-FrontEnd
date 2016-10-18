@@ -7,13 +7,13 @@ class Session {
 	ValidAccountsList accountsList;
 	TSF tsf;
 
-	public Session(String user, Integer tsfVersion){
+	public Session(String user, String tsfName, Integer tsfVersion, String valName){
 		this.user = user;
-		accountsList = new ValidAccountsList("accounts.txt");
+		accountsList = new ValidAccountsList(valName + ".txt");
 		if (tsfVersion.equals(0)) {
-			tsf = new TSF("TSF.txt");
+			tsf = new TSF(tsfName + ".txt");
 		} else {
-			tsf = new TSF("TSF" + tsfVersion + ".txt");
+			tsf = new TSF(tsfName + tsfVersion + ".txt");
 		}
 		System.out.println("Logged into " + user + " mode.");
 	}

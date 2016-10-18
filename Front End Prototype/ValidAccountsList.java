@@ -29,7 +29,7 @@ class ValidAccountsList {
 		try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
       		stream.forEach(line -> accountsList.add(line));
 		} catch(IOException|NumberFormatException e) {
-			System.out.println("whoops: "+e);
+			System.out.println("Error: "+e);
 			return false;
 		}
 
