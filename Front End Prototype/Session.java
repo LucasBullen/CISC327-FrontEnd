@@ -57,6 +57,28 @@ class Session {
 		route();
 	}
 
+	private void delete(){
+		String accountNumber = "";
+		String accountName = "";
+
+		System.out.println("Enter account number to delete.");
+		inputString = scan.nextLine();
+
+		if (user.equals("agent")){
+			System.out.println("Cannot access create feature in atm mode.");
+		} else {
+			accountNumber = inputString;
+			System.out.println("Enter name of account to delete.");
+			inputString = scan.nextLine();
+			accountName = inputString;
+		}
+		accountsList.remove(accountNumber);
+		System.out.println("Account successfully deleted.");
+
+		// add to TSF file
+		tsf.logDelete(accountNumber, accountName);
+		route();
+	}
 
 	private void deposit(){
 		// do all the stuff
@@ -64,6 +86,32 @@ class Session {
 		inputString = scan.nextLine();
 
 		route();
+	}
+
+	private void withdraw(){
+		String accountNumber = "";
+		String withdrawAmount = "";
+
+		System.out.println("Enter account number to delete.");
+		inputString = scan.nextLine();
+
+		if (inputString.length() != 8 || inputString.charAt(0) == '0'){
+			System.out.println("Incorrect account number format (8 digits, no leading zeros). Withdraw cancelled.");
+		} else {
+			accountNumber = inputString;
+			System.out.println("Enter amount to withdraw.");
+			inputString = scan.nextLine();
+			withdrawAmount = inputString;
+		}
+		System.out.println("Withdraw successful.");
+
+		// add to TSF file
+		tsf.logWithdraw(accountNumber, withdrawAmount);
+		route();
+	}
+
+	private void transfer(){
+
 	}
 
 	public void route(){
@@ -75,8 +123,17 @@ class Session {
 			case "create":
 				create();
 				break;
+			case "delete":
+				delete();
+				break;
 			case "deposit":
 				deposit();
+				break;
+			case "withdraw":
+				withdraw();
+				break;
+			case "transfer":
+				transfer();
 				break;
 			case "q":
 				return;
