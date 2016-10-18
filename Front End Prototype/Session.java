@@ -111,7 +111,34 @@ class Session {
 	}
 
 	private void transfer(){
+		String accountNumberOne = "";
+		String accountNumberTwo = "";
+		String transferAmount = "";
 
+		System.out.println("Enter first account number.");
+		inputString = scan.nextLine();
+
+		if (inputString.length() != 8 || inputString.charAt(0) == '0'){
+			System.out.println("Incorrect account number format (8 digits, no leading zeros). Withdraw cancelled.");
+		} else {
+			accountNumberOne = inputString;
+			System.out.println("Enter second account number.");
+			inputString = scan.nextLine();
+
+			if (inputString.length() != 8 || inputString.charAt(0) == '0'){
+				System.out.println("Incorrect account number format (8 digits, no leading zeros). Withdraw cancelled.");
+			} else {
+				accountNumberTwo = inputString;
+				System.out.println("Enter amount to transfer.");
+				inputString = scan.nextLine();
+				transferAmount = inputString;
+			}
+		}
+		System.out.println("Transfer successful.");
+
+		// add to TSF file
+		tsf.logWithdraw(accountNumberOne, accountNumberTwo, transferAmount);
+		route();
 	}
 
 	public void route(){
