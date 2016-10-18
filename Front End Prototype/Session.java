@@ -48,12 +48,12 @@ class Session {
 			}
 
 			accountName = inputString;
+
+			System.out.println("Account successfully created. Will update after synchronizing with Back Office.");
+
+			// add to TSF file
+			tsf.logCreate(accountNumber, accountName);
 		}
-
-		System.out.println("Account successfully created. Will update after synchronizing with Back Office.");
-
-		// add to TSF file
-		tsf.logCreate(accountNumber, accountName);
 		route();
 	}
 
@@ -71,12 +71,12 @@ class Session {
 			System.out.println("Enter name of account to delete.");
 			inputString = scan.nextLine();
 			accountName = inputString;
-		}
-		accountsList.remove(accountNumber);
-		System.out.println("Account successfully deleted.");
+			accountsList.remove(accountNumber);
+			System.out.println("Account successfully deleted.");
 
-		// add to TSF file
-		tsf.logDelete(accountNumber, accountName);
+			// add to TSF file
+			tsf.logDelete(accountNumber, accountName);
+		}
 		route();
 	}
 
@@ -102,11 +102,11 @@ class Session {
 			System.out.println("Enter amount to withdraw.");
 			inputString = scan.nextLine();
 			withdrawAmount = inputString;
-		}
-		System.out.println("Withdraw successful.");
+			System.out.println("Withdraw successful.");
 
-		// add to TSF file
-		tsf.logWithdraw(accountNumber, withdrawAmount);
+			// add to TSF file
+			tsf.logWithdraw(accountNumber, withdrawAmount);
+		}
 		route();
 	}
 
@@ -132,12 +132,13 @@ class Session {
 				System.out.println("Enter amount to transfer.");
 				inputString = scan.nextLine();
 				transferAmount = inputString;
+
+				System.out.println("Transfer successful.");
+
+				// add to TSF file
+				tsf.logTransfer(accountNumberOne, accountNumberTwo, transferAmount);
 			}
 		}
-		System.out.println("Transfer successful.");
-
-		// add to TSF file
-		tsf.logWithdraw(accountNumberOne, accountNumberTwo, transferAmount);
 		route();
 	}
 
