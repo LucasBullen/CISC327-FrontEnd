@@ -301,8 +301,6 @@ class Session {
 			case "transfer":
 				transfer();
 				break;
-			case "q":
-				return;
 			default:
 				System.out.println("Unrecognized command. Remember all commands must be in lowercase.");
 				route();
