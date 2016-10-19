@@ -17,16 +17,19 @@ import java.nio.file.Files;
 /**
 * The Main class contains the outer run loop of the ATM program. It is not
 * designed to stop. This class handles the login command, but all other commands
-* including logout are handled by Session.java.
+* including logout are handled by <code>Session.java</code>.
 *
 * After login, until logout is performed the run cycle is carried through
-* a variety of functions inside Session.java.
+* a variety of functions inside <code>Session.java</code>.
 */
 public class Main {
+
+	/**
+	* @param args[0] Name of valid accounts list (do not add file extension)
+	* @param args[1] Name of transaction summary file (do not add extension)
+	*/
 	public static void main(String[] args) {
-		// Name of Valid Accounts List (do not add file extension to name)
 		String valName = args[0];
-		// Name of Transaction Summary File (do not add file extension to name)
 		String tsfFileName = args[1];
 		Scanner scan = new Scanner(System.in);
 		String inputString;
