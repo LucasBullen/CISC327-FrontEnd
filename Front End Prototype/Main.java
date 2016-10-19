@@ -5,10 +5,6 @@
 // deposit - deposit to an account (ATM transaction) gd
 // withdraw - withdraw from an account (ATM transaction) dl
 // transfer - transfer between accounts (ATM transaction) lg
-// document gd
-// comments dl
-// cleanup lg
-
 import java.util.stream.Stream;
 import java.nio.charset.Charset;
 import java.util.Scanner;
@@ -18,13 +14,24 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.file.Files;
 
-
+/**
+* The Main class contains the outer run loop of the ATM program. It is not
+* designed to stop. This class handles the login command, but all other commands
+* including logout are handled by Session.java.
+*
+* After login, until logout is performed the run cycle is carried through
+* a variety of functions inside Session.java.
+*/
 public class Main {
 	public static void main(String[] args) {
+		// Name of Valid Accounts List (do not add file extension to name)
 		String valName = args[0];
+		// Name of Transaction Summary File (do not add file extension to name)
 		String tsfFileName = args[1];
 		Scanner scan = new Scanner(System.in);
 		String inputString;
+		// This is used to handle the case where we generate multiple TSF files.
+		// The naming scheme is TSF.txt, TSF2.txt, TSF3.txt, ...
 		Integer tsfVersion = 0;
 
 		for (;;) {
