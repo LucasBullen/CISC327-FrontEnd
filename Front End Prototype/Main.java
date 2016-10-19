@@ -1,10 +1,10 @@
 // login - start a Front End session (processing day)
 // logout - end a Front End session
 // create - create a new account (privileged transaction)
-// delete - delete an existing account (privileged transaction) gl
-// deposit - deposit to an account (ATM transaction) gd
-// withdraw - withdraw from an account (ATM transaction) dl
-// transfer - transfer between accounts (ATM transaction) lg
+// delete - delete an existing account (privileged transaction)
+// deposit - deposit to an account (ATM transaction)
+// withdraw - withdraw from an account (ATM transaction)
+// transfer - transfer between accounts (ATM transaction)
 import java.util.stream.Stream;
 import java.nio.charset.Charset;
 import java.util.Scanner;
@@ -51,5 +51,4 @@ public class Main {
 			}
 		}
 	}
-
 }
