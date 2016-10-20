@@ -175,7 +175,7 @@ class Session {
 	private void deposit(){
 		String failedText = "Deposit cancelled.";
 		String accountNumber = "";
-		String withdrawAmount = "";
+		String depositAmount = "";
 
 		System.out.println("Enter account number to deposit to.");
 		inputString = scan.nextLine();

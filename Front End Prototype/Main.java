@@ -21,6 +21,8 @@ import java.nio.file.Files;
 *
 * After login, until logout is performed the run cycle is carried through
 * a variety of functions inside <code>Session.java</code>.
+*
+* By the user inputting 'quit' the loop and program will end
 */
 public class Main {
 
@@ -49,6 +51,8 @@ public class Main {
 				} else {
 					System.out.println("Unrecognized mode. Login cancelled.");
 				}
+			} else if(inputString.equals("quit")){
+				return;
 			} else {
 				System.out.println("Unrecognized command. Remember all commands must be in lowercase.");
 			}

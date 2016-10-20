@@ -72,7 +72,7 @@ class TSF {
 	* @param amount        the amount in cents to deposit
 	*/
 	public void logDeposit(String accountNumber, String amount) {
-		return info.add(String.format("DE %s 00000000 %03d ***", accountNumber, Integer.parseInt(amount)));
+		info.add(String.format("DE %s 00000000 %03d ***", accountNumber, Integer.parseInt(amount)));
 	}
 
 	/**
@@ -81,7 +81,7 @@ class TSF {
 	*/
 	public void logLogout() {
 		info.add(String.format("ES  00000000 00000000 000 ***"));
-		System.out.println(writeToFile());
+		writeToFile();
 	}
 
 	/**
