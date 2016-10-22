@@ -80,7 +80,7 @@ class TSF {
 	* disk.
 	*/
 	public void logLogout() {
-		info.add(String.format("ES  00000000 00000000 000 ***"));
+		info.add(String.format("ES 00000000 00000000 000 ***"));
 		writeToFile();
 	}
 

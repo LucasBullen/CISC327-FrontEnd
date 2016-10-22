@@ -58,7 +58,6 @@ class ValidAccountsList {
 			return false;
 		}
 
-		System.out.println(accountsList);
 		return true;
 	}
 
