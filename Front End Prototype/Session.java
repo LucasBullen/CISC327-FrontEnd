@@ -114,19 +114,19 @@ class Session {
 		String accountNumber = "";
 		String accountName = "";
 
-		if (user.equals("agent")) {
+		if (!user.equals("agent")) {
 			System.out.println("Cannot access create feature in atm mode.");
-			route();
+			return;
 		}
 
 		System.out.println("Enter account number to create.");
 		inputString = scan.nextLine();
 
 		if (!checkAccountNumber(inputString, failedText)){
-			route();
+			return;
 		} else if (accountsList.search(inputString) != -1){
 			System.out.println("Account already exists. Create cancelled.");
-			route();
+			return;
 		}
 
 		accountNumber = inputString;
@@ -135,7 +135,7 @@ class Session {
 		inputString = scan.nextLine();
 
 		if (!checkAccountName(inputString, failedText)) {
-			route();
+			return;
 		}
 
 		accountName = inputString;
@@ -143,7 +143,7 @@ class Session {
 		// add to TSF file
 		tsf.logCreate(accountNumber, accountName);
 
-		route();
+		return;
 	}
 
   /**
@@ -164,24 +164,24 @@ class Session {
 		String accountNumber = "";
 		String accountName = "";
 
-		if (user.equals("agent")){
+		if (!user.equals("agent")){
 			System.out.println("Cannot access create feature in atm mode.");
-			route();
+			return;
 		}
 
 		System.out.println("Enter account number to delete.");
 		inputString = scan.nextLine();
 		if (!checkAccountNumber(inputString, failedText)) {
-			route();
+			return;
 		} else if (accountsList.search(inputString) == -1){
 			System.out.println("Account doesn't exists. Delete cancelled.");
-			route();
+			return;
 		}
 		accountNumber = inputString;
 		System.out.println("Enter name of account to delete.");
 		inputString = scan.nextLine();
 		if (!checkAccountName(inputString, failedText)) {
-			route();
+			return;
 		}
 		accountName = inputString;
 		accountsList.remove(accountNumber);
@@ -190,7 +190,7 @@ class Session {
 		// add to TSF file
 		tsf.logDelete(accountNumber, accountName);
 
-		route();
+		return;
 	}
 
   /**
@@ -208,10 +208,10 @@ class Session {
 		inputString = scan.nextLine();
 
 		if (!checkAccountNumber(inputString, failedText)){
-			route();
+			return;
 		} else if (accountsList.search(inputString) == -1){
 			System.out.println("Account doesn't exists. Deposit cancelled.");
-			route();
+			return;
 		}
 
 		accountNumber = inputString;
@@ -219,7 +219,7 @@ class Session {
 		inputString = scan.nextLine();
 
 		if (!checkAmount(inputString, failedText)){
-			route();
+			return;
 		}
 
 		depositAmount = inputString;
@@ -227,7 +227,7 @@ class Session {
 		// add to TSF file
 		tsf.logDeposit(accountNumber, depositAmount);
 
-		route();
+		return;
 	}
 
   /**
@@ -243,10 +243,10 @@ class Session {
 		inputString = scan.nextLine();
 
 		if (!checkAccountNumber(inputString, failedText)){
-			route();
+			return;
 		} else if (accountsList.search(inputString) == -1){
 			System.out.println("Account doesn't exists. Withdraw cancelled.");
-			route();
+			return;
 		}
 
 		accountNumber = inputString;
@@ -254,12 +254,12 @@ class Session {
 		inputString = scan.nextLine();
 
 		if (!checkAmount(inputString, failedText)){
-			route();
+			return;
 		}
 		Integer newSessionWithdraw = sessionWithdraw.get(accountNumber) + Integer.parseInt(inputString);
 		if (user.equals("atm") && newSessionWithdraw > 1000) {
 			System.out.println("Session withdraw maximum exceeded. Withdraw cancelled.");
-			route();
+			return;
 		}
 
 		withdrawAmount = inputString;
@@ -268,7 +268,7 @@ class Session {
 		// add to TSF file
 		tsf.logWithdraw(accountNumber, withdrawAmount);
 
-		route();
+		return;
 	}
 
   /**
@@ -285,20 +285,20 @@ class Session {
 		inputString = scan.nextLine();
 
 		if (!checkAccountNumber(inputString, failedText)){
-			route();
+			return;
 		} else if (accountsList.search(inputString) == -1){
 			System.out.println("Account doesn't exist. Transfer cancelled.");
-			route();
+			return;
 		}
 		accountNumberOne = inputString;
 		System.out.println("Enter second account number.");
 		inputString = scan.nextLine();
 
 		if (!checkAccountNumber(inputString, failedText)){
-			route();
+			return;
 		} else if (accountsList.search(inputString) == -1){
 			System.out.println("Account doesn't exist. Transfer cancelled.");
-			route();
+			return;
 		}
 
 		accountNumberTwo = inputString;
@@ -306,13 +306,13 @@ class Session {
 		inputString = scan.nextLine();
 
 		if (!checkAmount(inputString, failedText)){
-			route();
+			return;
 		}
 
 		Integer newSessionWithdraw = sessionWithdraw.get(accountNumberOne) + Integer.parseInt(inputString);
 		if (user.equals("atm") && newSessionWithdraw > 1000) {
 			System.out.println("Session withdraw maximum exceeded. Transfer cancelled.");
-			route();
+			return;
 		}
 
 		transferAmount = inputString;
@@ -322,7 +322,7 @@ class Session {
 		// add to TSF file
 		tsf.logTransfer(accountNumberOne, accountNumberTwo, transferAmount);
 
-		route();
+		return;
 	}
 
   /**
