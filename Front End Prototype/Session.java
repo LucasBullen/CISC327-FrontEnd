@@ -86,7 +86,7 @@ class Session {
 		if (!inputString.matches(regex)){
 			System.out.println("Incorrect amount format. " + addText);
 			return false;
-		}  else if (user.equals("atm") && Integer.parseInt(inputString) > 1000) {
+		}  else if (user.equals("atm") && Integer.parseInt(inputString) > 100000) {
 			System.out.println("Limit exceeded. " + addText);
 			return false;
 		}
@@ -260,9 +260,13 @@ class Session {
 			return;
 		}
 		Integer newSessionWithdraw;
-		if (sessionWithdraw.get(accountNumber) != null)
+		if (sessionWithdraw.get(accountNumber) != null) {
 		  newSessionWithdraw = sessionWithdraw.get(accountNumber) + Integer.parseInt(inputString);
-		if (user.equals("atm") && newSessionWithdraw > 1000) {
+		} else {
+			newSessionWithdraw = Integer.parseInt(inputString);
+		}
+
+		if (user.equals("atm") && newSessionWithdraw > 100000) {
 			System.out.println("Session withdraw maximum exceeded. Withdraw cancelled.");
 			return;
 		}
@@ -317,7 +321,7 @@ class Session {
 		Integer newSessionWithdraw;
 		if (sessionWithdraw.get(accountNumberOne) != null)
 		  newSessionWithdraw = sessionWithdraw.get(accountNumberOne) + Integer.parseInt(inputString);
-		if (user.equals("atm") && newSessionWithdraw > 1000) {
+		if (user.equals("atm") && newSessionWithdraw > 100000) {
 			System.out.println("Session withdraw maximum exceeded. Transfer cancelled.");
 			return;
 		}
