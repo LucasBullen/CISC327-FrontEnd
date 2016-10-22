@@ -14,6 +14,7 @@ class Session {
 	String user; //atm or agent
 	ValidAccountsList accountsList;
 	TSF tsf;
+	Map<String, Integer> sessionWithdraw;
 
 	/*
 	* constructor
@@ -26,6 +27,7 @@ class Session {
 	public Session(String user, String tsfName, Integer tsfVersion, String valName){
 		this.user = user;
 		accountsList = new ValidAccountsList(valName + ".txt");
+		sessionWithdraw = new HashMap<String, Integer>();
 		if (tsfVersion.equals(0)) {
 			tsf = new TSF(tsfName + ".txt");
 		} else {
@@ -41,8 +43,12 @@ class Session {
 	* @return             true if the account number is correctly formatted
 	*/
 	public Boolean checkAccountNumber(String inputString, String addText) {
-		if (inputString.length() != 8 || inputString.charAt(0) == '0'){
-			System.out.print("Incorrect account number format (8 digits, no leading zeros). " + addText);
+		// This string is a regex pattern that will match any string that does not
+		// begin with a zero and is 8 characters long consisting only of numeric
+		// characters
+		String regex = "^[1-9]\\d{7}$";
+		if (!inputString.matches(regex)){
+			System.out.println("Incorrect account number format (8 digits, no leading zeros). " + addText);
 			return false;
 		}
 		return true;
@@ -55,8 +61,12 @@ class Session {
 	* @return             true if the account name is correctly formatted
 	*/
 	public Boolean checkAccountName(String inputString, String addText) {
-		if (inputString.length() < 3 || inputString.length() > 30 || inputString.charAt(0) == ' ' || inputString.matches("^.*[^a-zA-Z0-9 ].*$")){
-			System.out.print("Incorrect account name format. " + addText);
+		// This string is a regex pattern that will match any string 3-30 characters
+		// long with no leading or trailing spaces and consisting only of
+		// alpha-numeric characters and spaces.
+		String regex = "^[a-zA-Z0-9][a-zA-Z0-9 ]{1,28}[a-zA-Z0-9]$";
+		if (!inputString.matches(regex)){
+			System.out.println("Incorrect account name format. " + addText);
 			return false;
 		}
 		return true;
@@ -69,9 +79,14 @@ class Session {
 	* @return             true if the amount is correctly formatted
 	*/
 	public Boolean checkAmount(String inputString, String addText) {
-		if (inputString.length() < 3 || inputString.length() > 8 || inputString.matches("^.*[^0-9 ].*$")){
-			System.out.print("Incorrect amount format. " + addText);
+		// This string is a regex pattern that will match any string 3-8 characters
+		// long consisting only of numeric characters.
+		String regex = "\\d{3,8}";
+		if (!inputString.matches(regex)){
+			System.out.println("Incorrect amount format. " + addText);
 			return false;
+		}  else if (user.equals("atm") && Integer.parseInt(inputString) > 1000) {
+			System.out.println("Limit exceeded. " + addText);
 		}
 		return true;
 	}
@@ -98,6 +113,11 @@ class Session {
 		String accountNumber = "";
 		String accountName = "";
 
+		if (user.equals("agent")) {
+			System.out.println("Cannot access create feature in atm mode.");
+			route();
+		}
+
 		System.out.println("Enter account number to create.");
 		inputString = scan.nextLine();
 
@@ -105,9 +125,6 @@ class Session {
 			route();
 		} else if (accountsList.search(inputString) != -1){
 			System.out.println("Account already exists. Create cancelled.");
-			route();
-		} else if (user.equals("agent")){
-			System.out.println("Cannot access create feature in atm mode.");
 			route();
 		}
 
@@ -153,9 +170,18 @@ class Session {
 
 		System.out.println("Enter account number to delete.");
 		inputString = scan.nextLine();
+		if (!checkAccountNumber(inputString, failedText)) {
+			route();
+		} else if (accountsList.search(inputString) == -1){
+			System.out.println("Account doesn't exists. Delete cancelled.");
+			route();
+		}
 		accountNumber = inputString;
 		System.out.println("Enter name of account to delete.");
 		inputString = scan.nextLine();
+		if (!checkAccountName(inputString, failedText)) {
+			route();
+		}
 		accountName = inputString;
 		accountsList.remove(accountNumber);
 		System.out.println("Account successfully deleted.");
@@ -182,6 +208,9 @@ class Session {
 
 		if (!checkAccountNumber(inputString, failedText)){
 			route();
+		} else if (accountsList.search(inputString) == -1){
+			System.out.println("Account doesn't exists. Deposit cancelled.");
+			route();
 		}
 
 		accountNumber = inputString;
@@ -190,7 +219,7 @@ class Session {
 
 		if (!checkAmount(inputString, failedText)){
 			route();
-		}
+		} else if Integer.parseInt()
 
 		depositAmount = inputString;
 		System.out.println("Deposit successful.");
@@ -214,6 +243,9 @@ class Session {
 
 		if (!checkAccountNumber(inputString, failedText)){
 			route();
+		} else if (accountsList.search(inputString) == -1){
+			System.out.println("Account doesn't exists. Withdraw cancelled.");
+			route();
 		}
 
 		accountNumber = inputString;
@@ -223,8 +255,14 @@ class Session {
 		if (!checkAmount(inputString, failedText)){
 			route();
 		}
+		Integer newSessionWithdraw = sessionWithdraw.get(accountNumber) + Integer.parseInt(inputString);
+		if (user.equals("atm") && newSessionWithdraw > 1000) {
+			System.out.println("Session withdraw maximum exceeded. Withdraw cancelled.");
+			route();
+		}
 
 		withdrawAmount = inputString;
+		sessionWithdraw.put(accountNumber, newSessionWithdraw);
 		System.out.println("Withdraw successful.");
 		// add to TSF file
 		tsf.logWithdraw(accountNumber, withdrawAmount);
@@ -247,12 +285,18 @@ class Session {
 
 		if (!checkAccountNumber(inputString, failedText)){
 			route();
+		} else if (accountsList.search(inputString) == -1){
+			System.out.println("Account doesn't exist. Transfer cancelled.");
+			route();
 		}
 		accountNumberOne = inputString;
 		System.out.println("Enter second account number.");
 		inputString = scan.nextLine();
 
 		if (!checkAccountNumber(inputString, failedText)){
+			route();
+		} else if (accountsList.search(inputString) == -1){
+			System.out.println("Account doesn't exist. Transfer cancelled.");
 			route();
 		}
 
@@ -264,8 +308,14 @@ class Session {
 			route();
 		}
 
-		transferAmount = inputString;
+		Integer newSessionWithdraw = sessionWithdraw.get(accountNumberOne) + Integer.parseInt(inputString);
+		if (user.equals("atm") && newSessionWithdraw > 1000) {
+			System.out.println("Session withdraw maximum exceeded. Transfer cancelled.");
+			route();
+		}
 
+		transferAmount = inputString;
+    sessionWithdraw.put(accountNumberOne, newSessionWithdraw);
 		System.out.println("Transfer successful.");
 
 		// add to TSF file
@@ -275,36 +325,28 @@ class Session {
 	}
 
   /**
-	* This function handles the flow of the program. Any valid command will call
-	* this function on completion in order to keep the program running, with the
-	* exception of the logout command which will return to the loop inside of
-	* Main.java and await a login command.
+	* This function handles the flow of the program. logout command  will return
+	* to the loop inside of Main.java and await a login command.
 	*/
 	public void route(){
-		String inputString = scan.nextLine();
-		switch(inputString){
-			case "logout":
-				logout();
-				break;
-			case "create":
-				create();
-				break;
-			case "delete":
-				delete();
-				break;
-			case "deposit":
-				deposit();
-				break;
-			case "withdraw":
-				withdraw();
-				break;
-			case "transfer":
-				transfer();
-				break;
-			default:
+		for (;;) {
+			String inputString = scan.nextLine();
+			if (inputString.equals("logout")) {
+					logout();
+					break;
+		  } else if (inputString.equals("create")) {
+					create();
+			} else if (inputString.equals("delete")) {
+					delete();
+      } else if (inputString.equals("deposit")) {
+					deposit();
+      } else if (inputString.equals("withdraw")) {
+					withdraw();
+      } else if (inputString.equals("transfer")) {
+					transfer();
+      } else {
 				System.out.println("Unrecognized command. Remember all commands must be in lowercase.");
-				route();
-				break;
+			}
 		}
 	}
 }
