@@ -118,8 +118,6 @@ class Session {
 		if (!user.equals("agent")) {
 			System.out.println("Cannot access create feature in atm mode.");
 			return;
-		} else {
-		  System.out.println("WHAT????", user, user.equals("agent"));
 		}
 
 		System.out.println("Enter account number to create.");
