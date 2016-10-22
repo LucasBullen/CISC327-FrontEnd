@@ -317,8 +317,11 @@ class Session {
 		}
 
 		Integer newSessionWithdraw;
-		if (sessionWithdraw.get(accountNumberOne) != null)
+		if (sessionWithdraw.get(accountNumberOne) != null) {
 		  newSessionWithdraw = sessionWithdraw.get(accountNumberOne) + Integer.parseInt(inputString);
+		} else {
+      newSessionWithdraw = Integer.parseInt(inputString);
+		}
 		if (user.equals("atm") && newSessionWithdraw > 100000) {
 			System.out.println("Session withdraw maximum exceeded. Transfer cancelled.");
 			return;
