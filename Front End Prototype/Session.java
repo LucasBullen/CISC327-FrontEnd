@@ -334,7 +334,7 @@ class Session {
 			String inputString = scan.nextLine();
 			if (inputString.equals("logout")) {
 					logout();
-					break;
+					return;
 		  } else if (inputString.equals("create")) {
 					create();
 			} else if (inputString.equals("delete")) {
