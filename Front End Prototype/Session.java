@@ -1,5 +1,6 @@
 import java.util.Scanner;
-
+import java.util.Map;
+import java.util.HashMap;
 
 /**
 * This class contains the methods for performing logout,
@@ -219,7 +220,7 @@ class Session {
 
 		if (!checkAmount(inputString, failedText)){
 			route();
-		} else if Integer.parseInt()
+		}
 
 		depositAmount = inputString;
 		System.out.println("Deposit successful.");
