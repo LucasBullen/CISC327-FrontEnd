@@ -88,6 +88,7 @@ class Session {
 			return false;
 		}  else if (user.equals("atm") && Integer.parseInt(inputString) > 1000) {
 			System.out.println("Limit exceeded. " + addText);
+			return false;
 		}
 		return true;
 	}
@@ -117,6 +118,8 @@ class Session {
 		if (!user.equals("agent")) {
 			System.out.println("Cannot access create feature in atm mode.");
 			return;
+		} else {
+		  System.out.println("WHAT????", user, user.equals("agent"));
 		}
 
 		System.out.println("Enter account number to create.");
@@ -256,7 +259,9 @@ class Session {
 		if (!checkAmount(inputString, failedText)){
 			return;
 		}
-		Integer newSessionWithdraw = sessionWithdraw.get(accountNumber) + Integer.parseInt(inputString);
+		Integer newSessionWithdraw;
+		if (sessionWithdraw.get(accountNumber) != null)
+		  newSessionWithdraw = sessionWithdraw.get(accountNumber) + Integer.parseInt(inputString);
 		if (user.equals("atm") && newSessionWithdraw > 1000) {
 			System.out.println("Session withdraw maximum exceeded. Withdraw cancelled.");
 			return;
@@ -309,7 +314,9 @@ class Session {
 			return;
 		}
 
-		Integer newSessionWithdraw = sessionWithdraw.get(accountNumberOne) + Integer.parseInt(inputString);
+		Integer newSessionWithdraw;
+		if (sessionWithdraw.get(accountNumberOne) != null)
+		  newSessionWithdraw = sessionWithdraw.get(accountNumberOne) + Integer.parseInt(inputString);
 		if (user.equals("atm") && newSessionWithdraw > 1000) {
 			System.out.println("Session withdraw maximum exceeded. Transfer cancelled.");
 			return;
@@ -333,18 +340,18 @@ class Session {
 		for (;;) {
 			String inputString = scan.nextLine();
 			if (inputString.equals("logout")) {
-					logout();
-					return;
+				logout();
+				return;
 		  } else if (inputString.equals("create")) {
-					create();
+				create();
 			} else if (inputString.equals("delete")) {
-					delete();
+				delete();
       } else if (inputString.equals("deposit")) {
-					deposit();
+				deposit();
       } else if (inputString.equals("withdraw")) {
-					withdraw();
+				withdraw();
       } else if (inputString.equals("transfer")) {
-					transfer();
+				transfer();
       } else {
 				System.out.println("Unrecognized command. Remember all commands must be in lowercase.");
 			}
